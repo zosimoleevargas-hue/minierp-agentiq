@@ -88,7 +88,6 @@ export default async function ProyectoPage({ params }: PageProps) {
       />
       <ProyectoDetail
         proyecto={result.proyecto}
-        clientes={[]}
         empleados={result.empleados}
         tareas={result.tareas}
         avance={result.avance}

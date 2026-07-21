@@ -1,6 +1,10 @@
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+import { ExternalLink } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -13,7 +17,6 @@ import type { ProyectoRow, ClienteRow, EmpleadoRow, TareaRow } from "../utils";
 
 interface ProyectoDetailProps {
   proyecto: ProyectoRow & { clientes: Pick<ClienteRow, "nombre"> | null };
-  clientes: ClienteRow[];
   empleados: EmpleadoRow[];
   tareas: TareaRow[];
   avance: number;
@@ -154,8 +157,15 @@ export function ProyectoDetail({
       </Card>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Tareas del proyecto</CardTitle>
+          <Link
+            href={`/tareas?proyecto=${proyecto.id}`}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+          >
+            <ExternalLink className="size-3.5" />
+            Ver Kanban
+          </Link>
         </CardHeader>
         <CardContent>
           {tareas.length === 0 ? (

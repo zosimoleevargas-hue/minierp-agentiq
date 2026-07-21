@@ -39,6 +39,15 @@ export async function PUT(
       );
     }
 
+    // RN-T08: Get old assignments before syncing
+    const { data: viejasAsignaciones } = await supabase
+      .from("proyecto_empleado")
+      .select("empleado_id")
+      .eq("proyecto_id", id);
+
+    const viejosIds = (viejasAsignaciones ?? []).map((a) => a.empleado_id);
+    const removidos = viejosIds.filter((eid) => !(empleado_ids ?? []).includes(eid));
+
     // Sync N:M — delete all then re-insert (acceptable for a tech demo)
     await supabase.from("proyecto_empleado").delete().eq("proyecto_id", id);
 
@@ -50,6 +59,16 @@ export async function PUT(
       if (syncError) return apiError(syncError);
     }
 
+    // RN-T08: NULL tasks of removed employees
+    if (removidos.length > 0) {
+      await supabase
+        .from("tareas")
+        .update({ empleado_id: null })
+        .eq("proyecto_id", id)
+        .in("empleado_id", removidos);
+    }
+
+    revalidatePath("/tareas");
     revalidatePath("/proyectos");
     revalidatePath(`/proyectos/${id}`);
 
