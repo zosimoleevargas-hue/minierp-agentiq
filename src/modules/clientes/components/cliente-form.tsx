@@ -65,6 +65,8 @@ export function ClienteForm({ defaultValues, clienteId }: ClienteFormProps) {
       );
       router.push("/clientes");
       router.refresh();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     } finally {
       setIsSubmitting(false);
     }

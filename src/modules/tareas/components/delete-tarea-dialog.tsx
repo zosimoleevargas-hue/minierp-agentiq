@@ -39,6 +39,8 @@ export function DeleteTareaDialog({ tarea, onClose }: DeleteTareaDialogProps) {
       toast.success("Tarea eliminada correctamente");
       router.refresh();
       onClose();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }

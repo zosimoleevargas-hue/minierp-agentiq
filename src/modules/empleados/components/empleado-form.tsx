@@ -79,6 +79,8 @@ export function EmpleadoForm({ defaultValues, empleadoId }: EmpleadoFormProps) {
       );
       router.push("/empleados");
       router.refresh();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     } finally {
       setIsSubmitting(false);
     }

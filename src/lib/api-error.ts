@@ -9,6 +9,12 @@ export function apiError(error: unknown): NextResponse {
         { status: 409 },
       );
     }
+    if (pgError.code === "23503") {
+      return NextResponse.json(
+        { error: "No se puede eliminar el registro porque tiene datos relacionados" },
+        { status: 409 },
+      );
+    }
   }
   return NextResponse.json(
     { error: "Error interno del servidor" },

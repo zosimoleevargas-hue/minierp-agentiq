@@ -18,18 +18,22 @@ export function DeleteEmpleadoDialog({
   const router = useRouter();
 
   const handleDelete = async () => {
-    const res = await fetch(`/api/empleados/${empleadoId}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`/api/empleados/${empleadoId}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      toast.error(body.error ?? "Error al eliminar el empleado");
-      return;
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body.error ?? "Error al eliminar el empleado");
+        return;
+      }
+
+      toast.success("Empleado eliminado correctamente");
+      router.refresh();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     }
-
-    toast.success("Empleado eliminado correctamente");
-    router.refresh();
   };
 
   return (

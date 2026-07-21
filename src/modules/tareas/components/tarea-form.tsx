@@ -118,6 +118,8 @@ export function TareaForm({
       );
       router.refresh();
       onSuccess();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     } finally {
       setIsSubmitting(false);
     }

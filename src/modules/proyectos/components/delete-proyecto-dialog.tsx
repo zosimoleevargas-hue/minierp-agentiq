@@ -18,18 +18,22 @@ export function DeleteProyectoDialog({
   const router = useRouter();
 
   const handleDelete = async () => {
-    const res = await fetch(`/api/proyectos/${proyectoId}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`/api/proyectos/${proyectoId}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      toast.error(body.error ?? "Error al eliminar el proyecto");
-      return;
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body.error ?? "Error al eliminar el proyecto");
+        return;
+      }
+
+      toast.success("Proyecto eliminado correctamente");
+      router.refresh();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     }
-
-    toast.success("Proyecto eliminado correctamente");
-    router.refresh();
   };
 
   return (

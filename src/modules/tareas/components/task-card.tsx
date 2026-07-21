@@ -48,20 +48,24 @@ export function TaskCard({ tarea, onEdit, onDelete }: TaskCardProps) {
       return;
     }
 
-    const res = await fetch(`/api/tareas/${tarea.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ estado: nuevoEstado }),
-    });
+    try {
+      const res = await fetch(`/api/tareas/${tarea.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ estado: nuevoEstado }),
+      });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      toast.error(body.error ?? "Error al cambiar el estado");
-      return;
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body.error ?? "Error al cambiar el estado");
+        return;
+      }
+
+      toast.success(`Estado actualizado a "${nuevoEstado}"`);
+      router.refresh();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     }
-
-    toast.success(`Estado actualizado a "${nuevoEstado}"`);
-    router.refresh();
   };
 
   return (

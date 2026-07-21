@@ -20,18 +20,22 @@ export function DeleteClienteDialog({
   const router = useRouter();
 
   const handleDelete = async () => {
-    const res = await fetch(`/api/clientes/${clienteId}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await fetch(`/api/clientes/${clienteId}`, {
+        method: "DELETE",
+      });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      toast.error(body.error ?? "Error al eliminar el cliente");
-      return;
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        toast.error(body.error ?? "Error al eliminar el cliente");
+        return;
+      }
+
+      toast.success("Cliente eliminado correctamente");
+      router.refresh();
+    } catch {
+      toast.error("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     }
-
-    toast.success("Cliente eliminado correctamente");
-    router.refresh();
   };
 
   const description = tieneProyectos
