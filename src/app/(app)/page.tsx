@@ -1,32 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { KpiGrid } from "@/modules/inicio/components/kpi-grid";
+import { UltimosProyectos } from "@/modules/inicio/components/ultimos-proyectos";
+import { ProximosVencimientos } from "@/modules/inicio/components/proximos-vencimientos";
+import {
+  getDashboardKPIs,
+  getUltimosProyectos,
+  getTareasConLimites,
+} from "@/modules/inicio/dashboard-data";
 
-export default function DashboardPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DashboardPage() {
+  const [kpis, proyectos, tareas] = await Promise.all([
+    getDashboardKPIs(),
+    getUltimosProyectos(),
+    getTareasConLimites(),
+  ]);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <p className="text-muted-foreground text-sm">
           Resumen general del sistema
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          { label: "Proyectos activos", value: "—" },
-          { label: "Tareas pendientes", value: "—" },
-          { label: "Clientes registrados", value: "—" },
-          { label: "Empleados activos", value: "—" },
-        ].map((item) => (
-          <Card key={item.label}>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-muted-foreground text-sm font-medium">
-                {item.label}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">{item.value}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <KpiGrid kpis={kpis} />
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <UltimosProyectos proyectos={proyectos} />
+        <ProximosVencimientos tareas={tareas} />
       </div>
     </div>
   );
