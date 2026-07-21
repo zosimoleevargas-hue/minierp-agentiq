@@ -9,6 +9,9 @@
  * - Row:     shape of a row when SELECTed
  * - Insert:  shape accepted by INSERT (id, created_at, updated_at optional)
  * - Update:  shape accepted by UPDATE (all fields optional)
+ *
+ * Relationships are typed as empty arrays since they are not needed for
+ * the typed Supabase client query builder.
  */
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
@@ -52,6 +55,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       empleados: {
         Row: {
@@ -81,6 +85,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       proyectos: {
         Row: {
@@ -119,6 +124,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       tareas: {
         Row: {
@@ -157,6 +163,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       proyecto_empleado: {
         Row: {
@@ -177,7 +184,10 @@ export interface Database {
           empleado_id?: string;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
   };
 }
