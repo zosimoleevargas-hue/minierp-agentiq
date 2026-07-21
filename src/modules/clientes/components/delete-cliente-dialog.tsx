@@ -1,0 +1,60 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
+
+interface DeleteClienteDialogProps {
+  clienteId: string;
+  clienteNombre: string;
+  tieneProyectos: boolean;
+}
+
+export function DeleteClienteDialog({
+  clienteId,
+  clienteNombre,
+  tieneProyectos,
+}: DeleteClienteDialogProps) {
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    const res = await fetch(`/api/clientes/${clienteId}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      toast.error(body.error ?? "Error al eliminar el cliente");
+      return;
+    }
+
+    toast.success("Cliente eliminado correctamente");
+    router.refresh();
+  };
+
+  const description = tieneProyectos
+    ? `Este cliente tiene proyectos asociados. No se puede eliminar hasta que los proyectos sean reasignados o eliminados.`
+    : `¿Estás seguro de eliminar a ${clienteNombre}? Esta acción no se puede deshacer.`;
+
+  return (
+    <ConfirmDialog
+      title="Eliminar cliente"
+      description={description}
+      confirmLabel="Eliminar"
+      variant="destructive"
+      onConfirm={handleDelete}
+      trigger={
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          disabled={tieneProyectos}
+          aria-label={`Eliminar ${clienteNombre}`}
+        >
+          <Trash2 className="size-4" />
+        </Button>
+      }
+    />
+  );
+}
