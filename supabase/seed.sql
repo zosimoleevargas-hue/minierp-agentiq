@@ -1,7 +1,21 @@
 -- Seed: MiniERP demo data
--- Execute AFTER the migration above has been run
--- Paste into Supabase SQL Editor or run via Supabase CLI
--- Requirements: clientes, empleados, proyectos, tareas, proyecto_empleado tables must exist
+-- Execute AFTER the migration above has been run.
+-- Paste into Supabase SQL Editor or run via Supabase CLI.
+-- Requirements: clientes, empleados, proyectos, tareas, proyecto_empleado tables must exist.
+--
+-- WARNING: This seed replaces all existing demo data. It is idempotent and safe to run
+-- multiple times on a development or staging database. DO NOT run on a production
+-- database with real data, as it will delete all existing rows.
+
+-- ============================================================
+-- CLEANUP — Remove existing demo data respecting FK order
+-- ============================================================
+
+TRUNCATE TABLE tareas CASCADE;
+TRUNCATE TABLE proyecto_empleado CASCADE;
+TRUNCATE TABLE proyectos CASCADE;
+TRUNCATE TABLE empleados CASCADE;
+TRUNCATE TABLE clientes CASCADE;
 
 -- ============================================================
 -- CLIENTES
