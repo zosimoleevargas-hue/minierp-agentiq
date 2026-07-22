@@ -65,6 +65,10 @@ export function ProyectoForm({
   const estado = useWatch({ name: "estado", control });
   const empleadosSeleccionados = useWatch({ name: "empleado_ids", control }) ?? [];
 
+  const clienteSeleccionado = clienteId
+    ? clientes.find((c) => c.id === clienteId)
+    : undefined;
+
   const toggleEmpleado = (eid: string) => {
     const current = empleadosSeleccionados;
     if (current.includes(eid)) {
@@ -156,7 +160,13 @@ export function ProyectoForm({
                     className="w-full"
                     aria-invalid={!!errors.cliente_id}
                   >
-                    <SelectValue placeholder="Seleccionar cliente" />
+                    <SelectValue placeholder="Seleccionar cliente">
+                      {clienteSeleccionado
+                        ? clienteSeleccionado.nombre
+                        : clienteId
+                          ? "Cliente no disponible"
+                          : "Seleccionar cliente"}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {clientes.map((c) => (
