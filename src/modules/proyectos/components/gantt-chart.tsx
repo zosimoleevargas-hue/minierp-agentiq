@@ -57,7 +57,7 @@ export function GanttChart({ proyectos }: GanttChartProps) {
   const cursor = new Date(minDate);
   cursor.setDate(1);
   while (cursor <= maxDate) {
-    const left = ((cursor.getTime() - minDate.getTime()) / (maxDate.getTime() - minDate.getTime())) * 100;
+    const left = Math.max(0, ((cursor.getTime() - minDate.getTime()) / (maxDate.getTime() - minDate.getTime())) * 100);
     monthMarkers.push({
       label: cursor.toLocaleDateString("es-ES", { month: "short", year: "2-digit" }),
       left: `${left}%`,

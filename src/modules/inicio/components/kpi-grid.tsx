@@ -21,9 +21,18 @@ const kpiDefs: KpiItem[] = [
 ];
 
 export function KpiGrid({ kpis }: { kpis: DashboardKPIs }) {
-  const items: KpiItem[] = kpiDefs.map((def, i) => ({
+  const kpiValueMap: Record<string, number> = {
+    "Proyectos activos": kpis.proyectosActivos,
+    "Proyectos completados": kpis.proyectosCompletados,
+    "Tareas pendientes": kpis.tareasPendientes,
+    "Tareas vencidas": kpis.tareasVencidas,
+    "Total clientes": kpis.totalClientes,
+    "Empleados activos": kpis.empleadosActivos,
+  };
+
+  const items: KpiItem[] = kpiDefs.map((def) => ({
     ...def,
-    value: Object.values(kpis)[i],
+    value: kpiValueMap[def.label] ?? 0,
   }));
 
   return (
