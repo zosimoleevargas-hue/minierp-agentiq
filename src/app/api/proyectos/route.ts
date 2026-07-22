@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase
       .from("proyectos")
-      .insert(proyectoData)
+      .insert({ ...proyectoData, estado: "Planeado" })
       .select()
       .single();
 

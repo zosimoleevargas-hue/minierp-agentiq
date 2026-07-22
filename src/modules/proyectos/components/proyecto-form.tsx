@@ -62,7 +62,6 @@ export function ProyectoForm({
 
   const clienteId = useWatch({ name: "cliente_id", control });
   const prioridad = useWatch({ name: "prioridad", control });
-  const estado = useWatch({ name: "estado", control });
   const empleadosSeleccionados = useWatch({ name: "empleado_ids", control }) ?? [];
 
   const clienteSeleccionado = clienteId
@@ -253,31 +252,6 @@ export function ProyectoForm({
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="estado">
-                Estado <span className="text-destructive">*</span>
-              </Label>
-              <Select
-                value={estado}
-                onValueChange={(v) => {
-                  if (v) setValue("estado", v as "Planeado" | "En progreso" | "Completado");
-                }}
-              >
-                <SelectTrigger className="w-full" aria-invalid={!!errors.estado}>
-                  <SelectValue placeholder="Seleccionar estado" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Planeado">Planeado</SelectItem>
-                  <SelectItem value="En progreso">En progreso</SelectItem>
-                  <SelectItem value="Completado">Completado</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.estado && (
-                <p id="error-estado" className="text-destructive text-xs" role="alert">
-                  {errors.estado.message}
-                </p>
-              )}
-            </div>
           </div>
 
           <div className="space-y-2">

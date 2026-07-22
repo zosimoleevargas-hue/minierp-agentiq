@@ -69,11 +69,19 @@ export async function PUT(
 
     if (error) return apiError(error);
 
+    const nuevoProyectoId = updateData.proyecto_id ?? existing.proyecto_id;
+
     await syncProjectStatus(existing.proyecto_id, supabase);
+    if (nuevoProyectoId !== existing.proyecto_id) {
+      await syncProjectStatus(nuevoProyectoId, supabase);
+    }
 
     revalidatePath("/tareas");
     revalidatePath("/proyectos");
     revalidatePath(`/proyectos/${existing.proyecto_id}`);
+    if (nuevoProyectoId !== existing.proyecto_id) {
+      revalidatePath(`/proyectos/${nuevoProyectoId}`);
+    }
 
     return NextResponse.json({ success: true, data });
   } catch (error) {

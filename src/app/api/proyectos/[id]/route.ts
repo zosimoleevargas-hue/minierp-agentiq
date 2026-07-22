@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { ProyectoSchema } from "@/modules/proyectos/schemas/proyecto-schema";
 import { apiError } from "@/lib/api-error";
+import { syncProjectStatus } from "@/lib/sync-project-status";
 
 export async function PUT(
   request: Request,
@@ -20,7 +21,8 @@ export async function PUT(
       );
     }
 
-    const { empleado_ids, ...proyectoData } = parsed.data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { empleado_ids, estado, ...proyectoData } = parsed.data;
 
     const supabase = createSupabaseClient();
 
@@ -67,6 +69,8 @@ export async function PUT(
         .eq("proyecto_id", id)
         .in("empleado_id", removidos);
     }
+
+    await syncProjectStatus(id, supabase);
 
     revalidatePath("/tareas");
     revalidatePath("/proyectos");
