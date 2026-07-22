@@ -3,6 +3,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { ProyectoForm } from "@/modules/proyectos/components/proyecto-form";
 import type { ClienteRow, EmpleadoRow } from "@/modules/proyectos/utils";
 
+export const dynamic = "force-dynamic";
+
 async function getFormData() {
   const supabase = createSupabaseClient();
 
