@@ -101,7 +101,7 @@ export function ProyectoDetail({
           )}
           <div className="sm:col-span-2">
             <p className="text-muted-foreground text-xs font-medium mb-1">
-              Avance
+              Avance del proyecto
             </p>
             <div className="flex items-center gap-3">
               <Progress value={avance} className="flex-1" />
@@ -109,6 +109,12 @@ export function ProyectoDetail({
                 {avance}%
               </span>
             </div>
+            {tareas.length > 0 && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {tareas.filter((t) => t.estado === "Completada").length} de{" "}
+                {tareas.length} tareas completadas
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>

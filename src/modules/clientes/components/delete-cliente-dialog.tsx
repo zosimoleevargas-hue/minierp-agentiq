@@ -42,6 +42,8 @@ export function DeleteClienteDialog({
     ? `Este cliente tiene proyectos asociados. No se puede eliminar hasta que los proyectos sean reasignados o eliminados.`
     : `¿Estás seguro de eliminar a ${clienteNombre}? Esta acción no se puede deshacer.`;
 
+  const msgBloqueado = "No se puede eliminar este cliente porque tiene proyectos asociados.";
+
   return (
     <ConfirmDialog
       title="Eliminar cliente"
@@ -50,14 +52,26 @@ export function DeleteClienteDialog({
       variant="destructive"
       onConfirm={handleDelete}
       trigger={
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          disabled={tieneProyectos}
-          aria-label={`Eliminar ${clienteNombre}`}
-        >
-          <Trash2 className="size-4" />
-        </Button>
+        tieneProyectos ? (
+          <span title={msgBloqueado}>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              disabled
+              aria-label={msgBloqueado}
+            >
+              <Trash2 className="size-4" />
+            </Button>
+          </span>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Eliminar ${clienteNombre}`}
+          >
+            <Trash2 className="size-4" />
+          </Button>
+        )
       }
     />
   );

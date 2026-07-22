@@ -11,8 +11,8 @@ export const TAREA_ESTADO_COLORS: Record<string, { badge: string }> = {
 };
 
 export const PRIORIDAD_COLORS: Record<string, { badge: string }> = {
-  Alta: { badge: "bg-red-100 text-red-800 border-transparent" },
-  Media: { badge: "bg-orange-100 text-orange-800 border-transparent" },
+  Alta: { badge: "bg-red-100 text-red-700 border-transparent" },
+  Media: { badge: "bg-orange-100 text-orange-700 border-transparent" },
   Baja: { badge: "bg-indigo-100 text-indigo-700 border-transparent" },
 };
 
