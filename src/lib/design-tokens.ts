@@ -13,7 +13,7 @@ export const TAREA_ESTADO_COLORS: Record<string, { badge: string }> = {
 export const PRIORIDAD_COLORS: Record<string, { badge: string }> = {
   Alta: { badge: "bg-red-100 text-red-800 border-transparent" },
   Media: { badge: "bg-orange-100 text-orange-800 border-transparent" },
-  Baja: { badge: "bg-slate-100 text-slate-700 border-transparent" },
+  Baja: { badge: "bg-indigo-100 text-indigo-700 border-transparent" },
 };
 
 export const KANBAN_COLORS: Record<string, { bg: string }> = {
@@ -23,10 +23,10 @@ export const KANBAN_COLORS: Record<string, { bg: string }> = {
 };
 
 export const KPI_BAR_COLORS: Record<string, string> = {
-  proyectosActivos: "bg-[oklch(0.62_0.1_190)]",
+  proyectosActivos: "bg-[oklch(0.68_0.16_65)]",
   proyectosCompletados: "bg-[oklch(0.55_0.1_150)]",
   tareasPendientes: "bg-[oklch(0.55_0.08_240)]",
   tareasVencidas: "bg-[oklch(0.577_0.245_27.325)]",
-  totalClientes: "bg-[oklch(0.55_0.08_240)]",
-  empleadosActivos: "bg-[oklch(0.62_0.1_190)]",
+  totalClientes: "bg-[oklch(0.45_0.12_265)]",
+  empleadosActivos: "bg-[oklch(0.6_0.1_185)]",
 };
