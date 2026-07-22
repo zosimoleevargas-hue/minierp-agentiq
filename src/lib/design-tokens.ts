@@ -13,7 +13,7 @@ export const TAREA_ESTADO_COLORS: Record<string, { badge: string }> = {
 export const PRIORIDAD_COLORS: Record<string, { badge: string }> = {
   Alta: { badge: "bg-red-100 text-red-800 border-transparent" },
   Media: { badge: "bg-orange-100 text-orange-800 border-transparent" },
-  Baja: { badge: "bg-gray-100 text-gray-600 border-transparent" },
+  Baja: { badge: "bg-slate-100 text-slate-700 border-transparent" },
 };
 
 export const KANBAN_COLORS: Record<string, { bg: string }> = {
