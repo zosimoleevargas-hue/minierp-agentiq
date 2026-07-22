@@ -47,6 +47,7 @@ export function KanbanPageClient({
           asignaciones={asignaciones}
           creando={creando}
           onCrearClose={() => setCreando(false)}
+          proyectoId={proyectoId}
         />
       </Suspense>
     </div>

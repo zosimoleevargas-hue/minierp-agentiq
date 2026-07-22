@@ -19,6 +19,7 @@ interface KanbanBoardProps {
   asignaciones: { proyecto_id: string; empleado_id: string }[];
   creando?: boolean;
   onCrearClose?: () => void;
+  proyectoId?: string;
 }
 
 export function KanbanBoard({
@@ -28,6 +29,7 @@ export function KanbanBoard({
   asignaciones,
   creando: creandoExterno,
   onCrearClose,
+  proyectoId,
 }: KanbanBoardProps) {
   const [editando, setEditando] = useState<TareaConRelaciones | null>(null);
   const [creandoInterno, setCreandoInterno] = useState(false);
@@ -64,6 +66,7 @@ export function KanbanBoard({
         empleados={empleados}
         asignaciones={asignaciones}
         mode="crear"
+        defaultProyectoId={proyectoId}
       />
 
       <TareaSheet

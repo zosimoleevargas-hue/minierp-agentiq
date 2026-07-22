@@ -16,8 +16,8 @@ export function AppSidebar() {
           <Building2 className="size-5" aria-hidden="true" />
         </div>
         <div className="flex flex-col leading-tight">
-          <span className="text-sm font-semibold">AGENTIQ</span>
-          <span className="text-xs text-sidebar-foreground/60">Project Management ERP</span>
+          <span className="text-sm font-semibold text-white">AGENTIQ</span>
+          <span className="text-xs text-[#CBD5E1]">Project Management ERP</span>
         </div>
       </div>
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">

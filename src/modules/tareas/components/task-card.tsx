@@ -21,18 +21,16 @@ interface TaskCardProps {
   onDelete: (tarea: TareaConRelaciones) => void;
 }
 
+const PRIORIDAD_CLASS: Record<string, string> = {
+  Alta: "text-[#DC2626] bg-[#FEF2F2] border-transparent",
+  Media: "text-[#B45309] bg-[#FFF7ED] border-transparent",
+  Baja: "text-[#374151] bg-[#F3F4F6] border-transparent",
+};
+
 function PrioridadBadge({ prioridad }: { prioridad: string | null }) {
   if (!prioridad) return null;
   return (
-    <Badge
-      variant={
-        prioridad === "Alta"
-          ? "destructive"
-          : prioridad === "Media"
-            ? "outline"
-            : "secondary"
-      }
-    >
+    <Badge className={PRIORIDAD_CLASS[prioridad]}>
       {prioridad}
     </Badge>
   );

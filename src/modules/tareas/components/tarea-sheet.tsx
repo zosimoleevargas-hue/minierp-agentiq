@@ -18,6 +18,7 @@ interface TareaSheetProps {
   asignaciones: { proyecto_id: string; empleado_id: string }[];
   tarea?: TareaConRelaciones;
   mode: "crear" | "editar";
+  defaultProyectoId?: string;
 }
 
 export function TareaSheet({
@@ -28,6 +29,7 @@ export function TareaSheet({
   asignaciones,
   tarea,
   mode,
+  defaultProyectoId,
 }: TareaSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -49,6 +51,7 @@ export function TareaSheet({
             asignaciones={asignaciones}
             tarea={tarea}
             mode={mode}
+            defaultProyectoId={defaultProyectoId}
             onSuccess={() => onOpenChange(false)}
           />
         </div>

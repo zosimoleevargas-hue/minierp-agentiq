@@ -28,6 +28,7 @@ interface TareaFormProps {
   tarea?: TareaConRelaciones;
   asignaciones: { proyecto_id: string; empleado_id: string }[];
   mode: "crear" | "editar";
+  defaultProyectoId?: string;
   onSuccess: () => void;
 }
 
@@ -37,6 +38,7 @@ export function TareaForm({
   tarea,
   asignaciones,
   mode,
+  defaultProyectoId,
   onSuccess,
 }: TareaFormProps) {
   const router = useRouter();
@@ -63,7 +65,7 @@ export function TareaForm({
       : {
           titulo: "",
           descripcion: "",
-          proyecto_id: "",
+          proyecto_id: defaultProyectoId ?? "",
           empleado_id: undefined,
           prioridad: undefined,
           fecha_limite: "",
@@ -172,7 +174,11 @@ export function TareaForm({
             className="w-full"
             aria-invalid={!!errors.proyecto_id}
           >
-            <SelectValue placeholder="Seleccionar proyecto" />
+            <SelectValue placeholder="Seleccionar proyecto">
+              {proyectoId
+                ? proyectos.find((p) => p.id === proyectoId)?.nombre ?? "Proyecto no disponible"
+                : "Seleccionar proyecto"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {proyectos.map((p) => (
@@ -198,7 +204,11 @@ export function TareaForm({
           }}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Sin asignar" />
+            <SelectValue placeholder="Sin asignar">
+              {empleadoId
+                ? empleadosDelProyecto.find((e) => e.id === empleadoId)?.nombre ?? "Empleado no disponible"
+                : "Sin asignar"}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="__none__">Sin asignar</SelectItem>

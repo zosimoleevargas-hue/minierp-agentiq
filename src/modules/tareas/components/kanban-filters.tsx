@@ -63,7 +63,11 @@ export function KanbanFilters({
         onValueChange={(v) => { if (v !== null) updateFilter("proyecto", v === " " ? "" : v); }}
       >
         <SelectTrigger className="w-44" aria-label="Filtrar por proyecto">
-          <SelectValue placeholder="Todos los proyectos" />
+          <SelectValue placeholder="Todos los proyectos">
+            {currentProyecto
+              ? proyectos.find((p) => p.id === currentProyecto)?.nombre ?? "Proyecto no disponible"
+              : "Todos los proyectos"}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value=" ">Todos los proyectos</SelectItem>
@@ -80,7 +84,13 @@ export function KanbanFilters({
         onValueChange={(v) => { if (v !== null) updateFilter("empleado", v === " " ? "" : v); }}
       >
         <SelectTrigger className="w-44" aria-label="Filtrar por empleado">
-          <SelectValue placeholder="Todos los empleados" />
+          <SelectValue placeholder="Todos los empleados">
+            {currentEmpleado === "ninguno"
+              ? "Sin asignar"
+              : currentEmpleado
+                ? empleados.find((e) => e.id === currentEmpleado)?.nombre ?? "Empleado no disponible"
+                : "Todos los empleados"}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value=" ">Todos los empleados</SelectItem>
@@ -98,7 +108,11 @@ export function KanbanFilters({
         onValueChange={(v) => { if (v !== null) updateFilter("prioridad", v === " " ? "" : v); }}
       >
         <SelectTrigger className="w-36" aria-label="Filtrar por prioridad">
-          <SelectValue placeholder="Todas" />
+          <SelectValue placeholder="Todas">
+            {currentPrioridad
+              ? ({ Baja: "Baja", Media: "Media", Alta: "Alta" } as Record<string, string>)[currentPrioridad] ?? "Prioridad no disponible"
+              : "Todas las prioridades"}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value=" ">Todas las prioridades</SelectItem>
