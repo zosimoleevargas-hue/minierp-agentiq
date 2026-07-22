@@ -3,15 +3,19 @@ import { PageHeader } from "@/components/shared/page-header";
 import { GanttChart } from "@/modules/proyectos/components/gantt-chart";
 import type { ProyectoRow } from "@/modules/proyectos/utils";
 
-async function getProyectos() {
+export const dynamic = "force-dynamic";
+
+async function getProyectos(): Promise<ProyectoRow[]> {
   const supabase = createSupabaseClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("proyectos")
     .select("id, nombre, fecha_inicio, fecha_entrega, estado")
     .order("fecha_inicio");
 
-  return (data ?? []) as ProyectoRow[];
+  if (error) throw new Error(`Error al cargar proyectos: ${error.message}`);
+
+  return data as ProyectoRow[];
 }
 
 export default async function GanttPage() {
