@@ -42,7 +42,7 @@ export async function getDashboardKPIs(): Promise<DashboardKPIs> {
   ] = await Promise.all([
     supabase.from("proyectos").select("*", { count: "exact", head: true }).eq("estado", "En progreso"),
     supabase.from("proyectos").select("*", { count: "exact", head: true }).eq("estado", "Completado"),
-    supabase.from("tareas").select("*", { count: "exact", head: true }).in("estado", ["Pendiente", "En progreso"]),
+    supabase.from("tareas").select("*", { count: "exact", head: true }).eq("estado", "Pendiente"),
     supabase.from("tareas").select("id").lt("fecha_limite", hoy).neq("estado", "Completada"),
     supabase.from("clientes").select("*", { count: "exact", head: true }),
     supabase.from("empleados").select("*", { count: "exact", head: true }).eq("estado", "Activo"),
