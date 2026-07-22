@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FolderKanban } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { PROYECTO_ESTADO_COLORS } from "@/lib/design-tokens";
 import {
   Table,
   TableHeader,
@@ -18,13 +19,8 @@ interface UltimosProyectosProps {
 function EstadoBadge({ estado }: { estado: string }) {
   return (
     <Badge
-      variant={
-        estado === "Completado"
-          ? "default"
-          : estado === "En progreso"
-            ? "outline"
-            : "secondary"
-      }
+      variant="outline"
+      className={PROYECTO_ESTADO_COLORS[estado]?.badge}
     >
       {estado}
     </Badge>

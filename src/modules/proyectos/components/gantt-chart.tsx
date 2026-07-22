@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { PROYECTO_ESTADO_COLORS } from "@/lib/design-tokens";
 import type { ProyectoRow } from "../utils";
 
 interface GanttChartProps {
@@ -7,14 +8,7 @@ interface GanttChartProps {
 }
 
 function getColor(estado: string): string {
-  switch (estado) {
-    case "En progreso":
-      return "bg-teal-500";
-    case "Completado":
-      return "bg-green-500";
-    default:
-      return "bg-slate-400";
-  }
+  return PROYECTO_ESTADO_COLORS[estado]?.bar ?? "bg-blue-500";
 }
 
 function parseUTCDate(str: string): Date {
@@ -191,13 +185,8 @@ export function GanttChart({ proyectos }: GanttChartProps) {
                   </td>
                   <td className="py-2 pr-4">
                     <Badge
-                      variant={
-                        p.estado === "Completado"
-                          ? "default"
-                          : p.estado === "En progreso"
-                            ? "outline"
-                            : "secondary"
-                      }
+                      variant="outline"
+                      className={PROYECTO_ESTADO_COLORS[p.estado]?.badge}
                     >
                       {p.estado}
                     </Badge>

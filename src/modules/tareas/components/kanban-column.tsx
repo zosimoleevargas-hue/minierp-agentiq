@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { KANBAN_COLORS, TAREA_ESTADO_COLORS } from "@/lib/design-tokens";
 import { TaskCard } from "./task-card";
 import type { TareaConRelaciones } from "../utils";
 
@@ -12,18 +13,6 @@ interface KanbanColumnProps {
   onDelete: (tarea: TareaConRelaciones) => void;
 }
 
-const COLOR_MAP: Record<string, string> = {
-  Pendiente: "bg-[#FEF2F2] border-[#FECACA]",
-  "En progreso": "bg-[#FFF7ED] border-[#FED7AA]",
-  Completada: "bg-green-50 border-green-200",
-};
-
-const BADGE_VARIANT_MAP: Record<string, "default" | "secondary" | "outline"> = {
-  Pendiente: "secondary",
-  "En progreso": "outline",
-  Completada: "default",
-};
-
 export function KanbanColumn({
   titulo,
   estado,
@@ -33,10 +22,10 @@ export function KanbanColumn({
 }: KanbanColumnProps) {
   return (
     <div
-      className={`flex min-h-[300px] flex-1 flex-col gap-3 rounded-lg border p-3 ${COLOR_MAP[estado] ?? "bg-muted"}`}
+      className={`flex min-h-[300px] flex-1 flex-col gap-3 rounded-lg border p-3 ${KANBAN_COLORS[estado]?.bg ?? "bg-muted"}`}
     >
       <div className="flex items-center gap-2">
-        <Badge variant={BADGE_VARIANT_MAP[estado] ?? "secondary"}>{titulo}</Badge>
+        <Badge variant="outline" className={TAREA_ESTADO_COLORS[estado]?.badge}>{titulo}</Badge>
         <span className="text-muted-foreground text-xs tabular-nums">
           {tareas.length}
         </span>

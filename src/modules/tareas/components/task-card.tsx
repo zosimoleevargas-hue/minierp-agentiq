@@ -12,6 +12,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Pencil, Trash2 } from "lucide-react";
+import { PRIORIDAD_COLORS } from "@/lib/design-tokens";
 import { ESTADOS_TAREA } from "../schemas/tarea-schema";
 import type { TareaConRelaciones } from "../utils";
 
@@ -21,16 +22,10 @@ interface TaskCardProps {
   onDelete: (tarea: TareaConRelaciones) => void;
 }
 
-const PRIORIDAD_CLASS: Record<string, string> = {
-  Alta: "text-[#DC2626] bg-[#FEF2F2] border-transparent",
-  Media: "text-[#B45309] bg-[#FFF7ED] border-transparent",
-  Baja: "text-[#374151] bg-[#F3F4F6] border-transparent",
-};
-
 function PrioridadBadge({ prioridad }: { prioridad: string | null }) {
   if (!prioridad) return null;
   return (
-    <Badge className={PRIORIDAD_CLASS[prioridad]}>
+    <Badge variant="outline" className={PRIORIDAD_COLORS[prioridad]?.badge}>
       {prioridad}
     </Badge>
   );

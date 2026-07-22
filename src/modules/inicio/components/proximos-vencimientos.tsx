@@ -11,7 +11,7 @@ function FechaBadge({ vencida }: { vencida: boolean }) {
     return <Badge variant="destructive">Vencida</Badge>;
   }
   return (
-    <Badge variant="outline" className="border-blue-200 text-blue-700">
+    <Badge variant="outline" className="bg-blue-100 text-blue-800 border-transparent">
       Próxima
     </Badge>
   );

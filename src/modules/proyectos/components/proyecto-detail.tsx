@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { PROYECTO_ESTADO_COLORS, TAREA_ESTADO_COLORS, PRIORIDAD_COLORS } from "@/lib/design-tokens";
 import { ExternalLink } from "lucide-react";
 import {
   Table,
@@ -25,13 +26,8 @@ interface ProyectoDetailProps {
 function EstadoBadge({ estado }: { estado: string }) {
   return (
     <Badge
-      variant={
-        estado === "Completado"
-          ? "default"
-          : estado === "En progreso"
-            ? "outline"
-            : "secondary"
-      }
+      variant="outline"
+      className={PROYECTO_ESTADO_COLORS[estado]?.badge}
     >
       {estado}
     </Badge>
@@ -42,13 +38,8 @@ function PrioridadBadge({ prioridad }: { prioridad: string | null }) {
   if (!prioridad) return null;
   return (
     <Badge
-      variant={
-        prioridad === "Alta"
-          ? "destructive"
-          : prioridad === "Media"
-            ? "outline"
-            : "secondary"
-      }
+      variant="outline"
+      className={PRIORIDAD_COLORS[prioridad]?.badge}
     >
       {prioridad}
     </Badge>
@@ -204,13 +195,8 @@ export function ProyectoDetail({
                       </TableCell>
                       <TableCell>
                         <Badge
-                          variant={
-                            t.estado === "Completada"
-                              ? "default"
-                              : t.estado === "En progreso"
-                                ? "outline"
-                                : "secondary"
-                          }
+                          variant="outline"
+                          className={TAREA_ESTADO_COLORS[t.estado]?.badge}
                         >
                           {t.estado}
                         </Badge>

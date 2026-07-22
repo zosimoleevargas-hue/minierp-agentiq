@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PROYECTO_ESTADO_COLORS, TAREA_ESTADO_COLORS, PRIORIDAD_COLORS } from "@/lib/design-tokens";
 import {
   Table,
   TableHeader,
@@ -74,13 +75,8 @@ export function EmpleadoDetail({
                     <TableCell className="font-medium">{p.nombre}</TableCell>
                     <TableCell>
                       <Badge
-                        variant={
-                          p.estado === "Completado"
-                            ? "default"
-                            : p.estado === "En progreso"
-                              ? "outline"
-                              : "secondary"
-                        }
+                        variant="outline"
+                        className={PROYECTO_ESTADO_COLORS[p.estado]?.badge}
                       >
                         {p.estado}
                       </Badge>
@@ -119,13 +115,8 @@ export function EmpleadoDetail({
                     <TableCell>
                       {t.prioridad && (
                         <Badge
-                          variant={
-                            t.prioridad === "Alta"
-                              ? "destructive"
-                              : t.prioridad === "Media"
-                                ? "outline"
-                                : "secondary"
-                          }
+                          variant="outline"
+                          className={PRIORIDAD_COLORS[t.prioridad]?.badge}
                         >
                           {t.prioridad}
                         </Badge>
@@ -136,13 +127,8 @@ export function EmpleadoDetail({
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant={
-                          t.estado === "Completada"
-                            ? "default"
-                            : t.estado === "En progreso"
-                              ? "outline"
-                              : "secondary"
-                        }
+                        variant="outline"
+                        className={TAREA_ESTADO_COLORS[t.estado]?.badge}
                       >
                         {t.estado}
                       </Badge>

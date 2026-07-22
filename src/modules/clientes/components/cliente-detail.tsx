@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PROYECTO_ESTADO_COLORS } from "@/lib/design-tokens";
 import {
   Table,
   TableHeader,
@@ -71,13 +72,8 @@ export function ClienteDetail({ cliente, proyectos }: ClienteDetailProps) {
                       <TableCell className="font-medium">{p.nombre}</TableCell>
                       <TableCell>
                         <Badge
-                          variant={
-                            p.estado === "Completado"
-                              ? "default"
-                              : p.estado === "En progreso"
-                                ? "outline"
-                                : "secondary"
-                          }
+                          variant="outline"
+                          className={PROYECTO_ESTADO_COLORS[p.estado]?.badge}
                         >
                           {p.estado}
                         </Badge>
