@@ -16,12 +16,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const insertData = { ...parsed.data, email: parsed.data.email || null };
-
     const supabase = createSupabaseClient();
     const { data, error } = await supabase
       .from("clientes")
-      .insert(insertData)
+      .insert(parsed.data)
       .select()
       .single();
 

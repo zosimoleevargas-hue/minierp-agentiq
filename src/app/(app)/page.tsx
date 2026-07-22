@@ -18,12 +18,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <p className="text-muted-foreground text-sm">
-          Monitor the overall health of your business operations.
-        </p>
-      </div>
-
       <KpiGrid kpis={kpis} />
 
       <div className="grid gap-6 lg:grid-cols-2">

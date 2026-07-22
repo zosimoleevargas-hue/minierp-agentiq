@@ -6,7 +6,6 @@ export default function NuevoClientePage() {
     <div>
       <PageHeader
         title="Nuevo cliente"
-        description="Registra un nuevo cliente"
       />
       <ClienteForm />
     </div>

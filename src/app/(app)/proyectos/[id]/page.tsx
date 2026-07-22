@@ -68,7 +68,6 @@ export default async function ProyectoPage({ params }: PageProps) {
     <div>
       <PageHeader
         title={result.proyecto.nombre}
-        description={result.proyecto.clientes?.nombre ?? ""}
         action={
           <div className="flex gap-2">
             <Link

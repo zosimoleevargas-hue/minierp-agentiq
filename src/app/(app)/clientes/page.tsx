@@ -46,7 +46,6 @@ export default async function ClientesPage({
     <div>
       <PageHeader
         title="Clientes"
-        description="Manage customer relationships and business information."
         action={
           <Link
             href="/clientes/nuevo"

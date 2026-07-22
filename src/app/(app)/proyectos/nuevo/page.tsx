@@ -34,7 +34,6 @@ export default async function NuevoProyectoPage() {
     <div>
       <PageHeader
         title="Nuevo proyecto"
-        description="Registra un nuevo proyecto"
       />
       <ProyectoForm clientes={clientes} empleados={empleados} />
     </div>

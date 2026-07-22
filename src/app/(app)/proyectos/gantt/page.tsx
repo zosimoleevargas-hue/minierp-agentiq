@@ -25,7 +25,6 @@ export default async function GanttPage() {
     <div>
       <PageHeader
         title="Cronograma (Gantt)"
-        description="Visualize project schedules and execution timelines."
       />
       <GanttChart proyectos={proyectos} />
     </div>

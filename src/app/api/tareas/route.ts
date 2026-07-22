@@ -19,13 +19,28 @@ export async function POST(request: Request) {
 
     const supabase = createSupabaseClient();
 
+    // Validate empleado exists and belongs to the proyecto
+    const { data: asignacion } = await supabase
+      .from("proyecto_empleado")
+      .select("empleado_id")
+      .eq("proyecto_id", parsed.data.proyecto_id)
+      .eq("empleado_id", parsed.data.empleado_id)
+      .maybeSingle();
+
+    if (!asignacion) {
+      return NextResponse.json(
+        { error: "El empleado seleccionado no pertenece a este proyecto." },
+        { status: 400 },
+      );
+    }
+
     const { data, error } = await supabase
       .from("tareas")
       .insert({
         titulo: parsed.data.titulo,
         descripcion: parsed.data.descripcion || null,
         proyecto_id: parsed.data.proyecto_id,
-        empleado_id: parsed.data.empleado_id ?? null,
+        empleado_id: parsed.data.empleado_id,
         prioridad: parsed.data.prioridad ?? null,
         fecha_limite: parsed.data.fecha_limite || null,
         estado: parsed.data.estado,

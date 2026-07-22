@@ -6,7 +6,6 @@ export default function NuevoEmpleadoPage() {
     <div>
       <PageHeader
         title="Nuevo empleado"
-        description="Registra un nuevo miembro del equipo"
       />
       <EmpleadoForm />
     </div>

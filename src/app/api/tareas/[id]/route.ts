@@ -19,7 +19,7 @@ export async function PUT(
     // Always fetch existing tarea to get proyecto_id (never trust client)
     const { data: existing } = await supabase
       .from("tareas")
-      .select("proyecto_id")
+      .select("proyecto_id, empleado_id")
       .eq("id", id)
       .single();
 
@@ -49,11 +49,26 @@ export async function PUT(
           { status: 400 },
         );
       }
+      // Validate empleado exists and belongs to the proyecto
+      const { data: asignacion } = await supabase
+        .from("proyecto_empleado")
+        .select("empleado_id")
+        .eq("proyecto_id", parsed.data.proyecto_id)
+        .eq("empleado_id", parsed.data.empleado_id)
+        .maybeSingle();
+
+      if (!asignacion) {
+        return NextResponse.json(
+          { error: "El empleado seleccionado no pertenece a este proyecto." },
+          { status: 400 },
+        );
+      }
+
       updateData = {
         titulo: parsed.data.titulo,
         descripcion: parsed.data.descripcion || null,
         proyecto_id: parsed.data.proyecto_id,
-        empleado_id: parsed.data.empleado_id ?? null,
+        empleado_id: parsed.data.empleado_id,
         prioridad: parsed.data.prioridad ?? null,
         fecha_limite: parsed.data.fecha_limite || null,
         estado: parsed.data.estado,

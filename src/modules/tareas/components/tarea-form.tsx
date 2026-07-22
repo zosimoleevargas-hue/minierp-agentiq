@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,7 +57,7 @@ export function TareaForm({
           titulo: tarea.titulo,
           descripcion: tarea.descripcion ?? "",
           proyecto_id: tarea.proyecto_id,
-          empleado_id: tarea.empleado_id,
+          empleado_id: tarea.empleado_id ?? "",
           prioridad: tarea.prioridad ?? undefined,
           fecha_limite: tarea.fecha_limite ?? "",
           estado: tarea.estado,
@@ -66,7 +66,7 @@ export function TareaForm({
           titulo: "",
           descripcion: "",
           proyecto_id: defaultProyectoId ?? "",
-          empleado_id: undefined,
+          empleado_id: "",
           prioridad: undefined,
           fecha_limite: "",
           estado: "Pendiente",
@@ -78,13 +78,17 @@ export function TareaForm({
   const prioridad = useWatch({ control, name: "prioridad" });
   const estado = useWatch({ control, name: "estado" });
 
-  const empleadosDelProyecto = proyectoId
-    ? empleadosDisponibles.filter((e) =>
-        asignaciones.some(
-          (a) => a.proyecto_id === proyectoId && a.empleado_id === e.id,
-        ),
-      )
-    : empleadosDisponibles;
+  const empleadosDelProyecto = useMemo(
+    () =>
+      proyectoId
+        ? empleadosDisponibles.filter((e) =>
+            asignaciones.some(
+              (a) => a.proyecto_id === proyectoId && a.empleado_id === e.id,
+            ),
+          )
+        : [],
+    [proyectoId, empleadosDisponibles, asignaciones],
+  );
 
   const onSubmit = async (data: TareaInput) => {
     setIsSubmitting(true);
@@ -96,7 +100,6 @@ export function TareaForm({
 
       const body = {
         ...data,
-        empleado_id: data.empleado_id || null,
         fecha_limite: data.fecha_limite || null,
         prioridad: data.prioridad || null,
       };
@@ -165,7 +168,14 @@ export function TareaForm({
           onValueChange={(v) => {
             if (v) {
               setValue("proyecto_id", v);
-              setValue("empleado_id", null);
+              if (
+                empleadoId &&
+                !asignaciones.some(
+                  (a) => a.proyecto_id === v && a.empleado_id === empleadoId,
+                )
+              ) {
+                setValue("empleado_id", "");
+              }
             }
           }}
           disabled={mode === "editar"}
@@ -196,29 +206,44 @@ export function TareaForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="empleado_id">Empleado asignado</Label>
-        <Select
-          value={empleadoId ?? "__none__"}
-          onValueChange={(v) => {
-            setValue("empleado_id", v === "__none__" ? null : v);
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Sin asignar">
-              {empleadoId
-                ? empleadosDelProyecto.find((e) => e.id === empleadoId)?.nombre ?? "Empleado no disponible"
-                : "Sin asignar"}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="__none__">Sin asignar</SelectItem>
-            {empleadosDelProyecto.map((e) => (
-              <SelectItem key={e.id} value={e.id}>
-                {e.nombre}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Label htmlFor="empleado_id">
+          Empleado asignado <span className="text-destructive">*</span>
+        </Label>
+        {proyectoId && empleadosDelProyecto.length === 0 ? (
+          <p className="text-xs text-muted-foreground">
+            Este proyecto no tiene empleados asignados. Asigna empleados al proyecto antes de crear una tarea.
+          </p>
+        ) : (
+          <>
+            <Select
+              value={empleadoId ?? ""}
+              onValueChange={(v) => {
+                if (v) setValue("empleado_id", v);
+              }}
+              disabled={!proyectoId}
+            >
+              <SelectTrigger className="w-full" aria-invalid={!!errors.empleado_id}>
+                <SelectValue placeholder="Seleccionar empleado">
+                  {empleadoId
+                    ? empleadosDelProyecto.find((e) => e.id === empleadoId)?.nombre ?? "Seleccionar empleado"
+                    : "Seleccionar empleado"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {empleadosDelProyecto.map((e) => (
+                  <SelectItem key={e.id} value={e.id}>
+                    {e.nombre}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.empleado_id && (
+              <p className="text-destructive text-xs" role="alert">
+                {errors.empleado_id.message}
+              </p>
+            )}
+          </>
+        )}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

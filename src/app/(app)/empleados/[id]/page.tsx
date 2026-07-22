@@ -64,7 +64,6 @@ export default async function EmpleadoPage({
     <div>
       <PageHeader
         title={result.empleado.nombre}
-        description={result.empleado.rol}
         action={
           <div className="flex gap-2">
             <Link

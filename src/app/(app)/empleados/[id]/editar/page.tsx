@@ -29,7 +29,6 @@ export default async function EditarEmpleadoPage({
     <div>
       <PageHeader
         title="Editar empleado"
-        description="Modifica los datos del empleado"
       />
       <EmpleadoForm defaultValues={empleado} empleadoId={id} />
     </div>

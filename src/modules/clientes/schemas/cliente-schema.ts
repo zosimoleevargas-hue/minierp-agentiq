@@ -1,11 +1,10 @@
 import { z } from "zod";
 
 const emailSchema = z
-  .union([
-    z.literal(""),
-    z.string().email("El correo no tiene un formato válido").transform((v) => v.trim().toLowerCase()),
-  ])
-  .optional();
+  .string()
+  .min(1, "El correo es obligatorio")
+  .email("El correo no tiene un formato válido")
+  .transform((v) => v.trim().toLowerCase());
 
 export const ClienteSchema = z.object({
   nombre: z

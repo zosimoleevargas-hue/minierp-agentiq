@@ -45,7 +45,6 @@ export default async function ClientePage({
     <div>
       <PageHeader
         title={result.cliente.nombre}
-        description={result.cliente.email ?? undefined}
         action={
           <div className="flex gap-2">
             <Link

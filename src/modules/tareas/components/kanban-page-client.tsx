@@ -27,7 +27,6 @@ export function KanbanPageClient({
     <div>
       <PageHeader
         title="Tareas"
-        description="Track work using an intuitive Kanban workflow."
         action={
           <KanbanFilters
             proyectos={proyectos}

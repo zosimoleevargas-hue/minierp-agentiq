@@ -52,6 +52,21 @@ export async function DELETE(
     const { id } = await params;
 
     const supabase = createSupabaseClient();
+
+    const { count } = await supabase
+      .from("tareas")
+      .select("id", { count: "exact", head: true })
+      .eq("empleado_id", id);
+
+    if (count && count > 0) {
+      return NextResponse.json(
+        {
+          error: `No puedes eliminar este empleado porque tiene ${count} tarea${count === 1 ? "" : "s"} asignada${count === 1 ? "" : "s"}.`,
+        },
+        { status: 409 },
+      );
+    }
+
     const { error } = await supabase
       .from("empleados")
       .delete()

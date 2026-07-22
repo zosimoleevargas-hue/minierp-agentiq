@@ -20,12 +20,10 @@ export async function PUT(
       );
     }
 
-    const updateData = { ...parsed.data, email: parsed.data.email || null };
-
     const supabase = createSupabaseClient();
     const { data, error } = await supabase
       .from("clientes")
-      .update(updateData)
+      .update(parsed.data)
       .eq("id", id)
       .select()
       .single();

@@ -19,7 +19,7 @@ export const TareaSchema = z.object({
     .max(200, "El título no puede exceder 200 caracteres"),
   descripcion: z.string().optional().or(z.literal("")),
   proyecto_id: z.string().uuid("Selecciona un proyecto"),
-  empleado_id: z.string().uuid().nullable().optional(),
+  empleado_id: z.string().uuid("Selecciona un empleado válido"),
   prioridad: z.enum(["Baja", "Media", "Alta"]).optional(),
   fecha_limite: z.string().optional().or(z.literal("")),
   estado: z.enum(["Pendiente", "En progreso", "Completada"], {

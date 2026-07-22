@@ -96,7 +96,7 @@ export function ClienteForm({ defaultValues, clienteId }: ClienteFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="email">
-              Correo de contacto
+              Correo de contacto <span className="text-destructive">*</span>
             </Label>
             <Input
               id="email"

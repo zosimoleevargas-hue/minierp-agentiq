@@ -39,7 +39,7 @@ export function DeleteEmpleadoDialog({
   return (
     <ConfirmDialog
       title="Eliminar empleado"
-      description={`Al eliminar a ${empleadoNombre}, sus tareas quedarán sin responsable asignado y se eliminarán sus asignaciones a proyectos. Esta acción no se puede deshacer.`}
+      description={`¿Estás seguro de eliminar a ${empleadoNombre}? Esta acción no se puede deshacer.`}
       confirmLabel="Eliminar"
       variant="destructive"
       onConfirm={handleDelete}

@@ -42,7 +42,6 @@ export default async function EditarClientePage({
     <div>
       <PageHeader
         title="Editar cliente"
-        description="Modifica los datos del cliente"
       />
       <ClienteForm defaultValues={cliente} clienteId={id} />
     </div>

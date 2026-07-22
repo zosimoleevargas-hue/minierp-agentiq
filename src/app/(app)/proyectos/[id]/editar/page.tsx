@@ -66,7 +66,6 @@ export default async function EditarProyectoPage({ params }: PageProps) {
     <div>
       <PageHeader
         title="Editar proyecto"
-        description="Modifica los datos del proyecto"
       />
       <ProyectoForm
         clientes={result.clientes}

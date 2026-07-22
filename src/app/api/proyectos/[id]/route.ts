@@ -50,6 +50,35 @@ export async function PUT(
     const viejosIds = (viejasAsignaciones ?? []).map((a) => a.empleado_id);
     const removidos = viejosIds.filter((eid) => !(empleado_ids ?? []).includes(eid));
 
+    // Block removal of employees with assigned tasks
+    if (removidos.length > 0) {
+      const { data: tareasActivas } = await supabase
+        .from("tareas")
+        .select("empleado_id")
+        .eq("proyecto_id", id)
+        .in("empleado_id", removidos);
+
+      if (tareasActivas && tareasActivas.length > 0) {
+        const empleadosConTareas = [...new Set(
+          tareasActivas.map((t) => t.empleado_id).filter((id): id is string => id !== null),
+        )];
+
+        const { data: empleados } = await supabase
+          .from("empleados")
+          .select("nombre")
+          .in("id", empleadosConTareas);
+
+        const nombres = (empleados ?? []).map((e) => e.nombre).filter(Boolean);
+
+        const mensaje =
+          nombres.length > 1
+            ? "No puedes retirar empleados que todavía tienen tareas asignadas en este proyecto. Reasigna sus tareas primero."
+            : `No puedes retirar a ${nombres[0]} del proyecto porque todavía tiene tareas asignadas. Reasigna sus tareas primero.`;
+
+        return NextResponse.json({ error: mensaje }, { status: 409 });
+      }
+    }
+
     // Sync N:M — delete all then re-insert (acceptable for a tech demo)
     await supabase.from("proyecto_empleado").delete().eq("proyecto_id", id);
 
@@ -59,15 +88,6 @@ export async function PUT(
         .insert(empleado_ids.map((eid) => ({ proyecto_id: id, empleado_id: eid })));
 
       if (syncError) return apiError(syncError);
-    }
-
-    // RN-T08: NULL tasks of removed employees
-    if (removidos.length > 0) {
-      await supabase
-        .from("tareas")
-        .update({ empleado_id: null })
-        .eq("proyecto_id", id)
-        .in("empleado_id", removidos);
     }
 
     await syncProjectStatus(id, supabase);
