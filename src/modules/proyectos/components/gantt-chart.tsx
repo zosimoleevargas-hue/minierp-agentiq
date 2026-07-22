@@ -17,6 +17,99 @@ function getColor(estado: string): string {
   }
 }
 
+function parseUTCDate(str: string): Date {
+  const [y, m, d] = str.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d));
+}
+
+function utcDaysBetween(a: Date, b: Date): number {
+  return (b.getTime() - a.getTime()) / 86_400_000;
+}
+
+function formatMonthLabel(date: Date): string {
+  return date.toLocaleDateString("es-ES", {
+    month: "short",
+    year: "2-digit",
+    timeZone: "UTC",
+  });
+}
+
+interface Tick {
+  pos: number;
+  isMonth: boolean;
+  date: Date;
+}
+
+function generateTicks(padMin: Date, padMax: Date): Tick[] {
+  const totalDays = utcDaysBetween(padMin, padMax);
+  const rangeMs = padMax.getTime() - padMin.getTime();
+  const seen = new Set<number>();
+
+  const addTick = (d: Date): void => {
+    const raw =
+      ((d.getTime() - padMin.getTime()) / rangeMs) * 100;
+    const pos = Math.max(0, Math.round(raw * 100) / 100);
+    if (!seen.has(pos)) {
+      seen.add(pos);
+    }
+  };
+
+  const getTicks = (): Tick[] => {
+    const result: Tick[] = [];
+    seen.forEach((p) => {
+      const ms = padMin.getTime() + (p / 100) * rangeMs;
+      result.push({ pos: p, isMonth: false, date: new Date(ms) });
+    });
+    return result;
+  };
+
+  let m = new Date(
+    Date.UTC(padMin.getUTCFullYear(), padMin.getUTCMonth(), 1),
+  );
+  while (m <= padMax) {
+    addTick(m);
+    m = new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth() + 1, 1));
+  }
+
+  if (totalDays <= 31) {
+    const step = totalDays <= 12 ? 1 : 2;
+    for (let d = step; d < totalDays; d += step) {
+      const date = new Date(padMin.getTime() + d * 86_400_000);
+      addTick(date);
+    }
+  } else if (totalDays <= 90) {
+    for (let w = 7; w < totalDays; w += 7) {
+      const date = new Date(padMin.getTime() + w * 86_400_000);
+      addTick(date);
+    }
+  }
+
+  const ticks = getTicks();
+
+  const monthPositions = new Set<number>();
+  let cursor = new Date(
+    Date.UTC(padMin.getUTCFullYear(), padMin.getUTCMonth(), 1),
+  );
+  while (cursor <= padMax) {
+    const raw =
+      ((cursor.getTime() - padMin.getTime()) / rangeMs) * 100;
+    const pos = Math.max(0, Math.round(raw * 100) / 100);
+    monthPositions.add(pos);
+    cursor = new Date(
+      Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1),
+    );
+  }
+
+  for (const t of ticks) {
+    if (monthPositions.has(t.pos)) {
+      t.isMonth = true;
+    }
+  }
+
+  ticks.sort((a, b) => a.pos - b.pos);
+  return ticks;
+}
+
 export function GanttChart({ proyectos }: GanttChartProps) {
   if (proyectos.length === 0) {
     return (
@@ -26,20 +119,31 @@ export function GanttChart({ proyectos }: GanttChartProps) {
     );
   }
 
-  // Determine date range
   const hoy = new Date();
+  const hoyUTC = new Date(
+    Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth(), hoy.getUTCDate()),
+  );
+
   const fechas = proyectos.flatMap((p) => [
-    new Date(p.fecha_inicio),
-    new Date(p.fecha_entrega),
+    parseUTCDate(p.fecha_inicio),
+    parseUTCDate(p.fecha_entrega),
   ]);
-  const minDate = new Date(Math.min(...fechas.map((d) => d.getTime()), hoy.getTime()));
-  const maxDate = new Date(Math.max(...fechas.map((d) => d.getTime()), hoy.getTime()));
 
-  // Pad range by 7 days on each side
-  minDate.setDate(minDate.getDate() - 7);
-  maxDate.setDate(maxDate.getDate() + 7);
+  const rawMin = new Date(
+    Math.min(...fechas.map((d) => d.getTime()), hoyUTC.getTime()),
+  );
+  const rawMax = new Date(
+    Math.max(...fechas.map((d) => d.getTime()), hoyUTC.getTime()),
+  );
 
-  // Group by estado
+  const padMin = new Date(rawMin.getTime() - 7 * 86_400_000);
+  const padMax = new Date(rawMax.getTime() + 7 * 86_400_000);
+
+  const rangeMs = padMax.getTime() - padMin.getTime();
+  const totalDays = utcDaysBetween(padMin, padMax);
+
+  const ticks = generateTicks(padMin, padMax);
+
   const grupos: Record<string, ProyectoRow[]> = {
     Planeado: [],
     "En progreso": [],
@@ -52,22 +156,14 @@ export function GanttChart({ proyectos }: GanttChartProps) {
 
   const ordenEstados = ["En progreso", "Planeado", "Completado"];
 
-  // Build month markers
-  const monthMarkers: { label: string; left: string }[] = [];
-  const cursor = new Date(minDate);
-  cursor.setDate(1);
-  while (cursor <= maxDate) {
-    const left = Math.max(0, ((cursor.getTime() - minDate.getTime()) / (maxDate.getTime() - minDate.getTime())) * 100);
-    monthMarkers.push({
-      label: cursor.toLocaleDateString("es-ES", { month: "short", year: "2-digit" }),
-      left: `${left}%`,
-    });
-    cursor.setMonth(cursor.getMonth() + 1);
+  function monthLabelStyle(pos: number): React.CSSProperties {
+    if (pos < 6) return { left: "0", transform: "none" };
+    if (pos > 94) return { left: "100%", transform: "translateX(-100%)" };
+    return { left: `${pos}%`, transform: "translateX(-50%)" };
   }
 
   return (
     <div className="space-y-6">
-      {/* Accessible table fallback */}
       <details className="group">
         <summary className="text-muted-foreground cursor-pointer text-sm font-medium hover:text-foreground">
           Ver como tabla
@@ -119,23 +215,49 @@ export function GanttChart({ proyectos }: GanttChartProps) {
         </div>
       </details>
 
-      {/* Visual Gantt */}
+      {/* Render estimate */}
+      {totalDays > 365 && (
+        <p className="text-muted-foreground text-xs">
+          Rango de {Math.round(totalDays)} d&iacute;as. La escala mensual
+          puede verse comprimida.
+        </p>
+      )}
+
       <div className="overflow-x-auto">
-        <div className="min-w-[640px]">
-          {/* Month header */}
-          <div className="relative mb-1 h-6">
-            {monthMarkers.map((m, i) => (
-              <span
+        <div className="relative">
+          {/* Grid lines layer */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ zIndex: 0 }}
+          >
+            {ticks.map((tick, i) => (
+              <div
                 key={i}
-                className="absolute -translate-x-1/2 text-xs text-muted-foreground"
-                style={{ left: m.left }}
-              >
-                {m.label}
-              </span>
+                className={`absolute top-0 h-full ${tick.isMonth ? "w-px bg-border" : "w-px bg-border/30"}`}
+                style={{ left: `${tick.pos}%` }}
+              />
             ))}
           </div>
 
-          {/* Grid lines + bars per group */}
+          {/* Month header layer */}
+          <div
+            className="relative h-6"
+            style={{ zIndex: 1 }}
+          >
+            {ticks
+              .filter((t) => t.isMonth)
+              .map((tick, i) => (
+                <span
+                  key={i}
+                  className="absolute whitespace-nowrap text-xs text-muted-foreground"
+                  style={monthLabelStyle(tick.pos)}
+                >
+                  {formatMonthLabel(tick.date)}
+                </span>
+              ))}
+          </div>
+
+          {/* Bars layer */}
           {ordenEstados.map((estado) => {
             const items = grupos[estado];
             if (!items || items.length === 0) return null;
@@ -147,16 +269,12 @@ export function GanttChart({ proyectos }: GanttChartProps) {
                 </h3>
                 <div className="space-y-1">
                   {items.map((p) => {
-                    const startMs = new Date(p.fecha_inicio).getTime();
-                    const endMs = new Date(p.fecha_entrega).getTime();
+                    const startMs = parseUTCDate(p.fecha_inicio).getTime();
+                    const endMs = parseUTCDate(p.fecha_entrega).getTime();
                     const left =
-                      ((startMs - minDate.getTime()) /
-                        (maxDate.getTime() - minDate.getTime())) *
-                      100;
+                      ((startMs - padMin.getTime()) / rangeMs) * 100;
                     const width =
-                      ((endMs - startMs) /
-                        (maxDate.getTime() - minDate.getTime())) *
-                      100;
+                      ((endMs - startMs) / rangeMs) * 100;
 
                     return (
                       <Link
@@ -165,7 +283,6 @@ export function GanttChart({ proyectos }: GanttChartProps) {
                         className="group relative block h-8"
                         aria-label={`${p.nombre}: ${p.fecha_inicio} → ${p.fecha_entrega}`}
                       >
-                        {/* Bar */}
                         <div
                           className={`absolute top-1 h-6 rounded-sm ${getColor(p.estado)} opacity-80 transition-opacity hover:opacity-100`}
                           style={{
@@ -173,7 +290,6 @@ export function GanttChart({ proyectos }: GanttChartProps) {
                             width: `${Math.max(2, width)}%`,
                           }}
                         />
-                        {/* Label */}
                         <span
                           className="absolute top-1 truncate px-1.5 text-xs leading-6 text-white"
                           style={{
@@ -190,6 +306,9 @@ export function GanttChart({ proyectos }: GanttChartProps) {
               </div>
             );
           })}
+
+          {/* Spacer to ensure grid lines reach the bottom */}
+          <div className="h-0" />
         </div>
       </div>
     </div>
