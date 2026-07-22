@@ -1,5 +1,6 @@
 "use client";
 
+import { Building2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -10,11 +11,14 @@ export function AppSidebar() {
 
   return (
     <aside className="fixed left-0 top-0 z-30 flex h-screen w-60 flex-col border-r bg-sidebar">
-      <div className="flex h-14 items-center gap-2 border-b px-4">
-        <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold">
-          M
+      <div className="flex h-16 items-center gap-3 border-b px-4">
+        <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <Building2 className="size-5" aria-hidden="true" />
         </div>
-        <span className="font-semibold text-sm">MiniERP</span>
+        <div className="flex flex-col leading-tight">
+          <span className="text-sm font-semibold">AGENTIQ</span>
+          <span className="text-xs text-sidebar-foreground/60">Project Management ERP</span>
+        </div>
       </div>
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">
         {navItems.map((item) => {

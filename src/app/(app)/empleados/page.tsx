@@ -24,7 +24,7 @@ export default async function EmpleadosPage() {
     <div>
       <PageHeader
         title="Empleados"
-        description="Gestión del equipo de trabajo"
+        description="Manage your workforce and team assignments."
         action={
           <Link
             href="/empleados/nuevo"

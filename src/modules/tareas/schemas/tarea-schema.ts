@@ -1,14 +1,12 @@
 import { z } from "zod";
 
+export const ESTADOS_TAREA = ["Pendiente", "En progreso", "Completada"] as const;
+
 const TRANSICIONES_PERMITIDAS: Record<string, string[]> = {
   Pendiente: ["En progreso"],
   "En progreso": ["Completada"],
   Completada: ["En progreso"],
 };
-
-export function obtenerTransiciones(estadoActual: string): string[] {
-  return TRANSICIONES_PERMITIDAS[estadoActual] ?? [estadoActual];
-}
 
 export function esTransicionValida(desde: string, hasta: string): boolean {
   return TRANSICIONES_PERMITIDAS[desde]?.includes(hasta) ?? false;

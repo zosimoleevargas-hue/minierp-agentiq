@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MiniERP",
-  description: "Sistema de gestión de proyectos",
+  title: "AGENTIQ — Business Management Platform",
+  description:
+    "Enterprise resource planning platform for project, client, employee, and task management.",
 };
 
 export default function RootLayout({

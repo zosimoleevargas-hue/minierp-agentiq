@@ -59,7 +59,7 @@ export default async function ProyectosPage({ searchParams }: PageProps) {
     <div>
       <PageHeader
         title="Proyectos"
-        description="Gestión de proyectos"
+        description="Plan, organize and monitor project execution."
         action={
           <div className="flex gap-2">
             <Link

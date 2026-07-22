@@ -20,7 +20,7 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       <div>
         <p className="text-muted-foreground text-sm">
-          Resumen general del sistema
+          Monitor the overall health of your business operations.
         </p>
       </div>
 

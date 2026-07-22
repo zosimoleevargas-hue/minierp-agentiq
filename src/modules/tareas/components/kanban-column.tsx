@@ -13,8 +13,8 @@ interface KanbanColumnProps {
 }
 
 const COLOR_MAP: Record<string, string> = {
-  Pendiente: "bg-muted",
-  "En progreso": "bg-blue-50 border-blue-200",
+  Pendiente: "bg-amber-50 border-amber-200",
+  "En progreso": "bg-teal-50 border-teal-200",
   Completada: "bg-green-50 border-green-200",
 };
 

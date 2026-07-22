@@ -9,11 +9,11 @@ interface GanttChartProps {
 function getColor(estado: string): string {
   switch (estado) {
     case "En progreso":
-      return "bg-blue-500";
+      return "bg-teal-500";
     case "Completado":
       return "bg-green-500";
     default:
-      return "bg-gray-400";
+      return "bg-slate-400";
   }
 }
 

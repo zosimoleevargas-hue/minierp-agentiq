@@ -12,7 +12,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Pencil, Trash2 } from "lucide-react";
-import { obtenerTransiciones, esTransicionValida } from "../schemas/tarea-schema";
+import { ESTADOS_TAREA } from "../schemas/tarea-schema";
 import type { TareaConRelaciones } from "../utils";
 
 interface TaskCardProps {
@@ -40,13 +40,9 @@ function PrioridadBadge({ prioridad }: { prioridad: string | null }) {
 
 export function TaskCard({ tarea, onEdit, onDelete }: TaskCardProps) {
   const router = useRouter();
-  const transiciones = obtenerTransiciones(tarea.estado);
 
   const handleStateChange = async (nuevoEstado: string) => {
-    if (!esTransicionValida(tarea.estado, nuevoEstado)) {
-      toast.error(`No se puede cambiar de "${tarea.estado}" a "${nuevoEstado}"`);
-      return;
-    }
+    if (nuevoEstado === tarea.estado) return;
 
     try {
       const res = await fetch(`/api/tareas/${tarea.id}`, {
@@ -100,7 +96,7 @@ export function TaskCard({ tarea, onEdit, onDelete }: TaskCardProps) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {transiciones.map((est) => (
+            {ESTADOS_TAREA.map((est) => (
               <SelectItem key={est} value={est}>
                 {est}
               </SelectItem>
