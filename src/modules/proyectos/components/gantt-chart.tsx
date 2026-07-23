@@ -130,7 +130,9 @@ export function GanttChart({ proyectos }: GanttChartProps) {
     Math.max(...fechas.map((d) => d.getTime()), hoyUTC.getTime()),
   );
 
-  const padMin = new Date(rawMin.getTime() - 7 * 86_400_000);
+  const padMin = new Date(
+    Date.UTC(rawMin.getUTCFullYear(), rawMin.getUTCMonth(), 1),
+  );
   const padMax = new Date(rawMax.getTime() + 7 * 86_400_000);
 
   const rangeMs = padMax.getTime() - padMin.getTime();
