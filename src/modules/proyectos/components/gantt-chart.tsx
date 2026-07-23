@@ -51,7 +51,7 @@ function generateTicks(padMin: Date, padMax: Date): Tick[] {
   const getTicks = (): Tick[] => {
     const result: Tick[] = [];
     seen.forEach((p) => {
-      const ms = padMin.getTime() + (p / 100) * rangeMs;
+      const ms = padMin.getTime() + (p / 100) * rangeMs + 3_600_000; // +1h para evitar redondeo
       result.push({ pos: p, isMonth: false, date: new Date(ms) });
     });
     return result;
