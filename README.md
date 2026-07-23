@@ -40,7 +40,7 @@ El proyecto sigue la arquitectura de **Next.js App Router** con una separación 
 - **Client Components** — formularios, diálogos de confirmación y componentes interactivos que consumen los Route Handlers mediante `fetch()`.
 - **Módulos** — cada entidad de negocio (clientes, empleados, proyectos, tareas) está encapsulada en `src/modules/<entidad>/` con sus propios componentes, esquemas de validación y lógica.
 
-No se utiliza autenticación. La comunicación con Supabase se realiza exclusivamente desde el servidor usando la anon key.
+No se utiliza autenticación. La aplicación utiliza Supabase como base de datos PostgreSQL. La conexión se configura mediante variables de entorno (NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY), y las operaciones principales se realizan desde el entorno de servidor de Next.js.
 
 ---
 
@@ -133,7 +133,7 @@ CRUD completo con asignación de empleados, prioridades y estados. Incluye valid
 Tablero Kanban con tres columnas (Pendiente, En progreso, Completada). Las tareas se asignan a proyectos y empleados, con prioridad y fecha límite. El cambio de estado se realiza mediante un selector en cada tarjeta del Kanban.
 
 ### Kanban
-Interfaz drag-free con selects de transición de estado. Cada tarea muestra proyecto, asignado, prioridad y fecha límite.
+El cambio de estado se realiza mediante selectores en cada tarjeta. No se implementó funcionalidad de arrastrar y soltar (Drag & Drop).
 
 ### Gantt (`/proyectos/gantt`)
 Vista de planificación que muestra proyectos y sus tareas en una línea de tiempo horizontal.
@@ -238,9 +238,27 @@ minierp/
 
 ## Capturas de pantalla
 
-> Pendiente — Las capturas de pantalla no se han incluido en esta entrega.
+## Capturas de pantalla
 
----
+### Dashboard
+
+![Dashboard]<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/847ead35-2eb3-4acc-9bb2-432422b42ea3" />
+
+
+### Clientes
+
+![Clientes]<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/71a08957-ba7f-4be2-96df-4a533a2f4b39" />
+
+
+### Proyectos
+
+![Proyectos]<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/f3b02c74-04c5-445e-b15a-c10d7f5ffabd" />
+
+
+### Kanban
+
+![Kanban]<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/28b312b5-61c4-492a-9463-57ac40895878" />
+
 
 ## Mejoras futuras
 
