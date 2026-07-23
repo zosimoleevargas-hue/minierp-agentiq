@@ -73,24 +73,29 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<tu-anon-key>
 
 ### Base de datos
 
-El proyecto incluye migraciones y datos semilla.
+El proyecto incluye una migración inicial y datos de demostración.
 
-Las migraciones se encuentran en `supabase/migrations/` y deben ejecutarse **en orden cronológico** (por prefijo de fecha):
+**Migración:**
 
-1. `20260721010000_initial_schema.sql`
-2. `20260722010000_set_tareas_empleado_not_null.sql`
+| Archivo | Descripción |
+|---------|-------------|
+| `supabase/migrations/20260721010000_initial_schema.sql` | Tablas, relaciones, constraints e índices |
 
-**Opción A — Supabase SQL Editor:**
-1. Abre el dashboard de Supabase > SQL Editor.
-2. Pega y ejecuta cada archivo de `supabase/migrations/` en orden ascendente.
-3. Luego, pega y ejecuta `supabase/seed.sql`.
+Abre el SQL Editor de Supabase, pega el contenido del archivo y ejecútalo.
 
-**Opción B — Supabase CLI:**
-```bash
-supabase db push
-```
+**Datos de demostración (seed):**
 
-> **Acerca del seed:** El archivo `supabase/seed.sql` es **idempotente**: elimina los datos demo existentes y los vuelve a crear. Puedes ejecutarlo cuantas veces sea necesario en desarrollo. No lo ejecutes en una base de datos de producción con información real, ya que reemplazará todos los datos.
+El archivo `supabase/seed.sql` crea clientes, empleados, proyectos y tareas de ejemplo para probar la aplicación inmediatamente con datos realistas.
+
+**Instalación nueva (base de datos vacía):**
+
+1. Ejecuta la migración para crear las tablas.
+2. Ejecuta el seed para cargar los datos de demostración.
+
+**Base de datos existente con información:**
+
+1. Ejecuta únicamente las migraciones necesarias.
+2. **NO ejecutes el seed.** El seed utiliza `TRUNCATE CASCADE`, que elimina todos los registros existentes antes de insertar los datos de demostración. No está diseñado para conservar datos existentes.
 
 ### Iniciar el servidor de desarrollo
 
@@ -117,7 +122,7 @@ Abrir [http://localhost:3000](http://localhost:3000).
 ## Funcionalidades
 
 ### Dashboard (`/`)
-Seis tarjetas KPI con enlaces directos: total de clientes, empleados, proyectos, tareas completadas, tareas pendientes y proyectos con retraso. Incluye tabla de últimos proyectos y lista de próximos vencimientos.
+Seis tarjetas KPI con enlaces directos: proyectos activos, proyectos completados, tareas pendientes, tareas vencidas, total clientes y empleados activos. Incluye tabla de últimos proyectos y lista de próximos vencimientos.
 
 ### Clientes (`/clientes`)
 CRUD completo con formularios validados. Permite crear, editar, visualizar y eliminar clientes. Cada cliente puede tener múltiples proyectos asociados.
@@ -135,10 +140,7 @@ Tablero Kanban con tres columnas (Pendiente, En progreso, Completada). Las tarea
 El cambio de estado se realiza mediante selectores en cada tarjeta. No se implementó funcionalidad de arrastrar y soltar (Drag & Drop).
 
 ### Gantt (`/proyectos/gantt`)
-Vista de planificación que muestra proyectos y sus tareas en una línea de tiempo horizontal.
-
-### KPIs
-Seis indicadores en el dashboard con recuentos en tiempo real y semáforo de retrasos.
+Cronograma horizontal que muestra todos los proyectos en una línea de tiempo según su fecha de inicio y fecha de entrega, agrupados por estado.
 
 ---
 
@@ -281,7 +283,7 @@ minierp/
    | `NEXT_PUBLIC_SUPABASE_URL` | URL de tu proyecto Supabase |
    | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon key de tu proyecto Supabase |
 
-4. Antes del despliegue, ejecuta la migración y el seed en la base de datos de Supabase que usará producción (SQL Editor o Supabase CLI).
+4. Antes del despliegue, ejecuta la migración inicial en la base de datos de Supabase que usará producción (SQL Editor).
 5. Haz clic en **Deploy**.
 6. Una vez desplegado, verifica las rutas principales:
 
