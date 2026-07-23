@@ -40,8 +40,7 @@ El proyecto sigue la arquitectura de **Next.js App Router** con una separación 
 - **Client Components** — formularios, diálogos de confirmación y componentes interactivos que consumen los Route Handlers mediante `fetch()`.
 - **Módulos** — cada entidad de negocio (clientes, empleados, proyectos, tareas) está encapsulada en `src/modules/<entidad>/` con sus propios componentes, esquemas de validación y lógica.
 
-No se utiliza autenticación. La aplicación utiliza Supabase como base de datos PostgreSQL. La conexión se configura mediante variables de entorno (NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY), y las operaciones principales se realizan desde el entorno de servidor de Next.js.
-
+No se utiliza autenticación. La aplicación utiliza Supabase como base de datos PostgreSQL. La conexión se configura mediante variables de entorno (`NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`), y las operaciones principales se realizan desde el entorno de servidor de Next.js.
 ---
 
 ## Requisitos
@@ -158,7 +157,7 @@ Las mutaciones se centralizan en Route Handlers (`/api/*`) en lugar de usar Serv
 Se utiliza Zod para la validación de formularios en el cliente y de los datos entrantes en los Route Handlers. Los esquemas están centralizados por módulo y son compartidos entre cliente y servidor.
 
 ### Supabase (sin auth)
-El proyecto no requiere autenticación. Supabase se usa únicamente como base de datos PostgreSQL con la anon key desde el servidor. Esto simplifica la configuración y evita exponer datos sensibles.
+El proyecto no requiere autenticación. Supabase se utiliza como base de datos PostgreSQL y la conexión se configura mediante la `NEXT_PUBLIC_SUPABASE_ANON_KEY` desde el servidor de Next.js. Esto simplifica la configuración del proyecto y centraliza el acceso a la base de datos.
 
 ### Tailwind CSS v4
 Se adopta Tailwind en su versión 4 con configuración CSS nativa (sin `tailwind.config.*`). La paleta y los estilos base se definen en `globals.css` mediante el plugin `@tailwindcss/postcss`.
