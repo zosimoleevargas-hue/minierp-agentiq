@@ -4,6 +4,11 @@ Aplicación web full-stack tipo ERP ligero para la gestión interna de proyectos
 
 El sistema permite administrar el ciclo de vida completo de proyectos: desde el registro de clientes y empleados, pasando por la planificación y asignación de proyectos, hasta el seguimiento de tareas en un tablero Kanban con transiciones de estado validadas.
 
+## Enlaces
+
+- Aplicación desplegada: https://minierp-seven.vercel.app
+- Repositorio: <URL DEL REPOSITORIO>
+
 ---
 
 ## Tecnologías
