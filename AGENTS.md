@@ -15,6 +15,8 @@ Applied all PDF-required corrections (estado derivado, email obligatorio, emplea
 - **Protección eliminación empleados**: DELETE verifica tareas → 409 si existe. Dialog descripción actualizada.
 - **Migración creada**: `supabase/migrations/20260722010000_set_tareas_empleado_not_null.sql` (verifica NULLs, SET NOT NULL, recrea FK ON DELETE RESTRICT). NO ejecutada.
 - **Archivos eliminados**: Normalization script, server client, SLP_ROLE_KEY de .env.example.
+### Future Improvements
+- **Cierre manual de proyecto**: Actualmente el estado "Completado" se asigna automáticamente vía `syncProjectStatus()` cuando todas las tareas están completadas. No hay acción manual de cierre porque sería redundante (ventana de milisegundos entre última tarea y sync). Mejora futura: Permitir cambios manuales del estado del proyecto y un flujo explícito de cierre administrativo con confirmación, validación y posible rollback.
 ### Current State
 - **Active**: Comprehensive audit — findings pass to user for decision.
 - **Next Move**: Deliver final audit report with severity-ranked findings and verdict.
