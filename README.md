@@ -2,7 +2,16 @@
 
 Aplicación web full-stack tipo ERP ligero para la gestión interna de proyectos, clientes, empleados y tareas. Desarrollada como prueba técnica para **AGENTIQ**.
 
-El sistema permite administrar el ciclo de vida completo de proyectos: desde el registro de clientes y empleados, pasando por la planificación y asignación de proyectos, hasta el seguimiento de tareas en un tablero Kanban con transiciones de estado validadas.
+El sistema permite administrar el ciclo de vida completo de proyectos: desde el registro de clientes y empleados, pasando por la planificación y asignación de proyectos, hasta el seguimiento de tareas en un tablero Kanban.
+
+---
+
+## Enlaces
+
+| | |
+|---|---|
+| **Aplicación** | [https://minierp-seven.vercel.app](https://minierp-seven.vercel.app) |
+| **Repositorio** | [https://github.com/zosimoleevargas-hue/minierp-agentiq](https://github.com/zosimoleevargas-hue/minierp-agentiq) |
 
 ## Enlaces
 
@@ -70,11 +79,16 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<tu-anon-key>
 
 ### Base de datos
 
-El proyecto incluye migraciones y datos semilla:
+El proyecto incluye migraciones y datos semilla.
+
+Las migraciones se encuentran en `supabase/migrations/` y deben ejecutarse **en orden cronológico** (por prefijo de fecha):
+
+1. `20260721010000_initial_schema.sql`
+2. `20260722010000_set_tareas_empleado_not_null.sql`
 
 **Opción A — Supabase SQL Editor:**
 1. Abre el dashboard de Supabase > SQL Editor.
-2. Pega y ejecuta el contenido de `supabase/migrations/20260721010000_initial_schema.sql`.
+2. Pega y ejecuta cada archivo de `supabase/migrations/` en orden ascendente.
 3. Luego, pega y ejecuta `supabase/seed.sql`.
 
 **Opción B — Supabase CLI:**
@@ -115,13 +129,13 @@ Seis tarjetas KPI con enlaces directos: total de clientes, empleados, proyectos,
 CRUD completo con formularios validados. Permite crear, editar, visualizar y eliminar clientes. Cada cliente puede tener múltiples proyectos asociados.
 
 ### Empleados (`/empleados`)
-CRUD completo con roles y estados. Los empleados pueden ser asignados a proyectos y tareas. Al eliminar un empleado, sus tareas quedan sin responsable y se eliminan sus asignaciones a proyectos.
+CRUD completo con roles y estados. Los empleados pueden ser asignados a proyectos y tareas. No se puede eliminar un empleado que tenga tareas asignadas: la API devuelve HTTP 409. Las tareas deben reasignarse o resolverse antes de eliminar al empleado.
 
 ### Proyectos (`/proyectos`)
 CRUD completo con asignación de empleados, prioridades y estados. Incluye validación de fechas y diagrama de Gantt básico.
 
 ### Tareas (`/tareas`)
-Tablero Kanban con tres columnas (Pendiente, En progreso, Completada). Las tareas se asignan a proyectos y empleados, con prioridad y fecha límite. Las transiciones de estado están validadas (no se puede retroceder ni saltar estados).
+Tablero Kanban con tres columnas (Pendiente, En progreso, Completada). Las tareas se asignan a proyectos y empleados, con prioridad y fecha límite. El cambio de estado se realiza mediante un selector en cada tarjeta del Kanban.
 
 ### Kanban
 Interfaz drag-free con selects de transición de estado. Cada tarea muestra proyecto, asignado, prioridad y fecha límite.
@@ -156,6 +170,16 @@ Se adopta Tailwind en su versión 4 con configuración CSS nativa (sin `tailwind
 
 ---
 
+## Supuestos y reglas de negocio
+
+- **Empleado responsable en tareas:** Cada tarea requiere un empleado responsable. El empleado debe pertenecer al equipo del proyecto. La regla se valida tanto en frontend (selector deshabilitado si no hay empleados en el proyecto) como en backend (validación contra `proyecto_empleado`).
+- **Protección al retirar empleados:** No se puede retirar de un proyecto a un empleado que tenga tareas asignadas dentro de ese proyecto. La API devuelve HTTP 409 con el nombre del empleado. Las tareas deben reasignarse antes de retirarlo.
+- **Protección al eliminar empleados:** No se puede eliminar un empleado que tenga tareas asignadas. La API devuelve HTTP 409.
+- **Estados de tarea:** Los estados disponibles son Pendiente, En progreso y Completada. No se implementó una secuencia estricta de transiciones porque el requerimiento no la exige explícitamente.
+- **Autenticación:** Quedó fuera del alcance obligatorio. El proyecto funciona sin login, con acceso completo a todas las funcionalidades.
+
+---
+
 ## Estructura del proyecto
 
 ```
@@ -170,7 +194,7 @@ minierp/
 ├── public/                        # Archivos estáticos
 ├── src/
 │   ├── app/
-│   │   ├── (app)/                 # Layout principal + rutas protegidas (sin auth)
+│   │   ├── (app)/                 # Grupo de rutas del layout principal
 │   │   │   ├── clientes/          # CRUD de clientes
 │   │   │   ├── empleados/         # CRUD de empleados
 │   │   │   ├── proyectos/         # CRUD de proyectos + vista Gantt
@@ -219,18 +243,7 @@ minierp/
 
 ## Capturas de pantalla
 
-> *(Agregar aquí capturas de las siguientes vistas)*
-
-| Vista | Archivo |
-|-------|---------|
-| Dashboard | `screenshots/dashboard.png` |
-| Lista de clientes | `screenshots/clientes.png` |
-| Formulario de cliente | `screenshots/cliente-form.png` |
-| Lista de empleados | `screenshots/empleados.png` |
-| Lista de proyectos | `screenshots/proyectos.png` |
-| Formulario de proyecto | `screenshots/proyecto-form.png` |
-| Diagrama Gantt | `screenshots/gantt.png` |
-| Tablero Kanban | `screenshots/kanban.png` |
+> Pendiente — Las capturas de pantalla no se han incluido en esta entrega.
 
 ---
 
@@ -273,6 +286,6 @@ minierp/
 
 ## Autor
 
-**Prueba técnica — AGENTIQ**
+**Zosimo Lee Vargas** — Prueba técnica desarrollada para AGENTIQ.
 
 Desarrollado con Next.js 16 + Supabase + Tailwind CSS + shadcn/ui.
