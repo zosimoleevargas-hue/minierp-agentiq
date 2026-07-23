@@ -242,22 +242,22 @@ minierp/
 
 ### Dashboard
 
-![Dashboard]<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/847ead35-2eb3-4acc-9bb2-432422b42ea3" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/847ead35-2eb3-4acc-9bb2-432422b42ea3" />
 
 
 ### Clientes
 
-![Clientes]<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/71a08957-ba7f-4be2-96df-4a533a2f4b39" />
+<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/71a08957-ba7f-4be2-96df-4a533a2f4b39" />
 
 
 ### Proyectos
 
-![Proyectos]<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/f3b02c74-04c5-445e-b15a-c10d7f5ffabd" />
+<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/f3b02c74-04c5-445e-b15a-c10d7f5ffabd" />
 
 
 ### Kanban
 
-![Kanban]<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/28b312b5-61c4-492a-9463-57ac40895878" />
+<img width="1920" height="1040" alt="image" src="https://github.com/user-attachments/assets/28b312b5-61c4-492a-9463-57ac40895878" />
 
 
 ## Mejoras futuras
