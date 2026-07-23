@@ -238,7 +238,6 @@ minierp/
 
 ## Capturas de pantalla
 
-## Capturas de pantalla
 
 ### Dashboard
 
