@@ -13,11 +13,6 @@ El sistema permite administrar el ciclo de vida completo de proyectos: desde el 
 | **Aplicación** | [https://minierp-seven.vercel.app](https://minierp-seven.vercel.app) |
 | **Repositorio** | [https://github.com/zosimoleevargas-hue/minierp-agentiq](https://github.com/zosimoleevargas-hue/minierp-agentiq) |
 
-## Enlaces
-
-- Aplicación desplegada: https://minierp-seven.vercel.app
-- Repositorio: (https://github.com/zosimoleevargas-hue/minierp-agentiq/blob/main/README.md)
-
 ---
 
 ## Tecnologías
